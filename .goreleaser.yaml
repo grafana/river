@@ -1,0 +1,50 @@
+release:
+  draft: true
+  replace_existing_draft: true
+
+builds:
+  - id: riverfmt
+    main: ./cmd/riverfmt/
+    binary: riverfmt
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 6
+      - 7
+    ignore:
+      - goos: windows
+        goarch: arm
+
+archives:
+  - id: riverfmt-archive
+    format: tar.gz
+    name_template: >-
+      riverfmt_
+      {{- .Os }}_
+      {{- .Arch }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    builds:
+      - riverfmt
+    files: ['NONE*']
+    format_overrides:
+    - goos: windows
+      format: zip
+
+checksum:
+  name_template: 'SHA256SUMS'
+  algorithm: sha256
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
