@@ -7,6 +7,13 @@ internal API changes are not present.
 Main (unreleased)
 -----------------
 
+v0.1.1 (2023-08-25)
+-------------------
+
+### Other changes
+
+- Fix typos and expand README for documentation.
+
 v0.1.0 (2023-08-25)
 -------------------
 
