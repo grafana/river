@@ -344,7 +344,7 @@ func (p *parser) parseBlockName() *blockName {
 			// label to be a valid identifier.
 			if len(p.lit) > 2 {
 				bn.Label = p.lit[1 : len(p.lit)-1]
-				if !isValidIdentifier(bn.Label) {
+				if !scanner.IsValidIdentifier(bn.Label) {
 					p.addErrorf("expected block label to be a valid identifier, but got %q", bn.Label)
 				}
 			}
@@ -706,10 +706,4 @@ func (p *parser) parseField() *ast.ObjectField {
 
 	field.Value = p.ParseExpression()
 	return &field
-}
-
-func isValidIdentifier(in string) bool {
-	s := scanner.New(nil, []byte(in), nil, 0)
-	_, tok, lit := s.Scan()
-	return tok == token.IDENT && lit == in
 }

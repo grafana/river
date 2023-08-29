@@ -68,7 +68,7 @@ func valueTokens(v value.Value) []Token {
 		}
 
 		for i := 0; i < len(keys); i++ {
-			if isValidIdentifier(keys[i]) {
+			if scanner.IsValidIdentifier(keys[i]) {
 				toks = append(toks, Token{token.IDENT, keys[i]})
 			} else {
 				toks = append(toks, Token{token.STRING, fmt.Sprintf("%q", keys[i])})
@@ -92,10 +92,4 @@ func valueTokens(v value.Value) []Token {
 	}
 
 	return toks
-}
-
-func isValidIdentifier(in string) bool {
-	s := scanner.New(nil, []byte(in), nil, 0)
-	_, tok, lit := s.Scan()
-	return tok == token.IDENT && lit == in
 }
