@@ -26,7 +26,7 @@ type SanitizeIdentifierOptions struct {
 
 func sanitizeIdentifierOptionsDefault() *SanitizeIdentifierOptions {
 	return &SanitizeIdentifierOptions{
-		Prefix:      "id_",
+		Prefix:      "_",
 		Replacement: "_",
 	}
 }

@@ -38,10 +38,10 @@ func TestSanitizeIdentifierOptions(t *testing.T) {
 		opts             *scanner.SanitizeIdentifierOptions
 	}{
 		{"empty", "", "", "cannot generate a new identifier for an empty string", nil},
-		{"start_number", "0identifier_1", "id_0identifier_1", "", nil},
+		{"start_number", "0identifier_1", "_0identifier_1", "", nil},
 		{"start_char", "identifier_1", "identifier_1", "", nil},
 		{"start_underscore", "_identifier_1", "_identifier_1", "", nil},
-		{"special_chars", "!@#$%^&*()", "id___________", "", nil},
+		{"special_chars", "!@#$%^&*()", "___________", "", nil},
 		{"special_char", "identifier_1!", "identifier_1_", "", nil},
 		{"spaces", "identifier _ 1", "identifier___1", "", nil},
 		{"bad prefix", "", "", "prefix `\"123\"` is not a valid river identifier", &scanner.SanitizeIdentifierOptions{Prefix: "123", Replacement: ""}},
