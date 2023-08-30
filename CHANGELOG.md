@@ -7,9 +7,6 @@ internal API changes are not present.
 Main (unreleased)
 -----------------
 
-v0.2.0 (2023-08-25)
--------------------
-
 ### Features
 
 - Add functions for validating and sanitizing River identifiers to the scanner package (@erikbaranowski)
