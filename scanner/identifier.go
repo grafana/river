@@ -15,10 +15,6 @@ func IsValidIdentifier(in string) bool {
 }
 
 type SanitizeIdentifierOptions struct {
-	// EmptyValue is what to use as the identifier when the input is empty.
-	// This must be a valid river identifier.
-	EmptyValue string
-
 	// Prefix is what will be prepended to the identifier if it does not start
 	// with a letter or underscore. This must be a valid river identifier.
 	Prefix string
@@ -30,7 +26,6 @@ type SanitizeIdentifierOptions struct {
 
 func sanitizeIdentifierOptionsDefault() *SanitizeIdentifierOptions {
 	return &SanitizeIdentifierOptions{
-		EmptyValue:  "empty",
 		Prefix:      "id_",
 		Replacement: "_",
 	}
@@ -38,10 +33,6 @@ func sanitizeIdentifierOptionsDefault() *SanitizeIdentifierOptions {
 
 // validate will return an error if the options are invalid.
 func (opts *SanitizeIdentifierOptions) validate() error {
-	if !IsValidIdentifier(opts.EmptyValue) {
-		return fmt.Errorf("emptyValue `%q` is not a valid river identifier", opts.EmptyValue)
-	}
-
 	if !IsValidIdentifier(opts.Prefix) {
 		return fmt.Errorf("prefix `%q` is not a valid river identifier", opts.Prefix)
 	}
@@ -72,14 +63,14 @@ func SanitizeIdentifier(in string, opts *SanitizeIdentifierOptions) (string, err
 		return "", err
 	}
 
-	return generateNewIdentifier(in, opts.EmptyValue, opts.Prefix, opts.Replacement)
+	return generateNewIdentifier(in, opts.Prefix, opts.Replacement)
 }
 
 // generateNewIdentifier expects a valid river prefix and replacement
 // string and returns a new identifier based on the given input.
-func generateNewIdentifier(in string, emptyValue string, prefix string, replacement string) (string, error) {
+func generateNewIdentifier(in string, prefix string, replacement string) (string, error) {
 	if in == "" {
-		return emptyValue, nil
+		return "", fmt.Errorf("cannot generate a new identifier for an empty string")
 	}
 
 	newValue := ""
