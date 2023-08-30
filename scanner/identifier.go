@@ -9,8 +9,7 @@ import (
 // IsValidIdentifier returns true if the given string is a valid river
 // identifier.
 func IsValidIdentifier(in string) bool {
-	f := token.NewFile("test")
-	s := New(f, []byte(in), nil, 0)
+	s := New(token.NewFile(""), []byte(in), nil, 0)
 	_, tok, lit := s.Scan()
 	return tok == token.IDENT && lit == in
 }
