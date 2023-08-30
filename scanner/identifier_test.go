@@ -75,7 +75,11 @@ func BenchmarkSanitizeIdentifier(b *testing.B) {
 	}
 }
 
-func FuzzTestSanitizeIdentifier(f *testing.F) {
+func FuzzSanitizeIdentifier(f *testing.F) {
+	for _, tc := range sanitizeTestCases {
+		f.Add(tc.identifier)
+	}
+
 	f.Fuzz(func(t *testing.T, input string) {
 		newIdentifier, err := scanner.SanitizeIdentifier(input)
 		if input == "" {
