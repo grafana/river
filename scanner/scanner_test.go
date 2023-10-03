@@ -41,6 +41,7 @@ var tokens = []tokenExample{
 	{token.FLOAT, "1e-100"},
 	{token.FLOAT, "2.71828e-1000"},
 	{token.STRING, `"Hello, world!"`},
+	{token.STRING, "`Hello, world!\\\\`"},
 
 	// Operators and delimiters
 	{token.ADD, "+"},
