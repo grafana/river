@@ -18,6 +18,10 @@ v0.1.1 (2023-08-25)
 
 - Fix typos and expand README for documentation.
 
+- `token/builder`: Update River encode handling of optional fields to compare values using
+  DeepEqual even if they don't implement Equal when deciding if the field
+  should be included. (@erikbaranowski)
+
 v0.1.0 (2023-08-25)
 -------------------
 
