@@ -9,3 +9,7 @@ a
 multi_line
 attr'\"`
 }
+
+block "json" {
+	attr = `{ "key": "value" }`
+}
