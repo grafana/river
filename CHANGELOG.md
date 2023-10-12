@@ -9,6 +9,8 @@ Main (unreleased)
 
 ### Features
 
+- Add support for raw strings in river using backticks (@erikbaranowski)
+
 - Add functions for validating and sanitizing River identifiers to the scanner package (@erikbaranowski)
 
 v0.1.1 (2023-08-25)
