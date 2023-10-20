@@ -1,8 +1,8 @@
-block `label` {
+block "label" {
 	attr = `'\"attr`
 }
 
-block `multi_line` {
+block "multi_line" {
 	attr = `'\"this
 is
 a
@@ -10,6 +10,6 @@ multi_line
 attr'\"`
 }
 
-block `json` {
+block "json" {
 	attr = `{ "key": "value" }`
 }
