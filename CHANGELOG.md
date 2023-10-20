@@ -7,6 +7,9 @@ internal API changes are not present.
 Main (unreleased)
 -----------------
 
+v0.2.0 (2023-10-20)
+-------------------
+
 ### Features
 
 - Add support for raw strings in river using backticks (@erikbaranowski)
