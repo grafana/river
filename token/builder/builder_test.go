@@ -24,7 +24,7 @@ func TestBuilder_File(t *testing.T) {
 	f.Body().AppendBlock(b1)
 
 	b2 := builder.NewBlock([]string{"test", "block"}, "labeled")
-	b2.Body().SetAttributeTokens("inner_attr", []builder.Token{{Tok: token.STRING, Lit: `"block 2"`}})
+	b2.Body().SetAttributeTokens("inner_attr", []builder.Token{{Tok: token.STRING, Lit: "`\"block 2`"}})
 	f.Body().AppendBlock(b2)
 
 	expect := format(t, `
@@ -36,7 +36,7 @@ func TestBuilder_File(t *testing.T) {
 		}
 
 		test.block "labeled" {
-			inner_attr = "block 2"
+			inner_attr = `+"`\"block 2`"+`
 		}
 	`)
 

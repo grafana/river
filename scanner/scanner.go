@@ -246,12 +246,17 @@ scanAgain:
 			s.onError(pos.Offset(), "illegal single-quoted string; use double quotes")
 			insertTerm = true
 			tok = token.ILLEGAL
-			lit = s.scanString('\'')
+			lit = s.scanString('\'', true, false)
 
 		case '"':
 			insertTerm = true
 			tok = token.STRING
-			lit = s.scanString('"')
+			lit = s.scanString('"', true, false)
+
+		case '`':
+			insertTerm = true
+			tok = token.STRING
+			lit = s.scanString('`', false, true)
 
 		case '|':
 			if s.ch != '|' {
@@ -469,14 +474,14 @@ func (s *Scanner) digits() (count int) {
 	return
 }
 
-func (s *Scanner) scanString(until rune) string {
+func (s *Scanner) scanString(until rune, escape bool, multiline bool) string {
 	// subtract 1 to account for the opening '"' which was already consumed by
 	// the scanner forcing progress.
 	off := s.offset - 1
 
 	for {
 		ch := s.ch
-		if ch == '\n' || ch == eof {
+		if (!multiline && ch == '\n') || ch == eof {
 			s.onError(off, "string literal not terminated")
 			break
 		}
@@ -484,7 +489,7 @@ func (s *Scanner) scanString(until rune) string {
 		if ch == until {
 			break
 		}
-		if ch == '\\' {
+		if escape && ch == '\\' {
 			s.scanEscape()
 		}
 	}

@@ -340,6 +340,11 @@ func (p *parser) parseBlockName() *blockName {
 	// [ string ]
 	if p.tok != token.ASSIGN && p.tok != token.LCURLY {
 		if p.tok == token.STRING {
+			// Only allow double-quoted strings for block labels.
+			if p.lit[0] != '"' {
+				p.addErrorf("expected block label to be a double quoted string, but got %q", p.lit)
+			}
+
 			// Strip the quotes if it's non-empty. We then require any non-empty
 			// label to be a valid identifier.
 			if len(p.lit) > 2 {
