@@ -7,6 +7,9 @@ internal API changes are not present.
 Main (unreleased)
 -----------------
 
+v0.3.0 (2023-10-26)
+-------------------
+
 ### Enhancements
 
 - Allow the `[]` operator to return `null` when accessing non-existant keys in
