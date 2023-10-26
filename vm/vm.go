@@ -403,17 +403,13 @@ func (vm *Evaluator) evaluateExpr(scope *Scope, assoc map[value.Value]ast.Node, 
 		case value.TypeObject:
 			// Objects are indexed with a string.
 			if idx.Type() != value.TypeString {
-				return value.Null, value.TypeError{Value: idx, Expected: value.TypeNumber}
+				return value.Null, value.TypeError{Value: idx, Expected: value.TypeString}
 			}
 
 			field, ok := val.Key(idx.Text())
 			if !ok {
-				return value.Null, diag.Diagnostic{
-					Severity: diag.SeverityLevelError,
-					StartPos: ast.StartPos(expr.Index).Position(),
-					EndPos:   ast.EndPos(expr.Index).Position(),
-					Message:  fmt.Sprintf("field %q does not exist", idx.Text()),
-				}
+				// If a key doesn't exist in an object accessed with [], return null.
+				return value.Null, nil
 			}
 			return field, nil
 

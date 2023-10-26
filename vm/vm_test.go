@@ -122,6 +122,7 @@ func TestVM_Evaluate(t *testing.T) {
 		// Access
 		{`{ a = 15 }.a`, int(15)},
 		{`{ a = { b = 12 } }.a.b`, int(12)},
+		{`{}["foo"]`, nil},
 
 		// Indexing
 		{`[0, 1, 2][1]`, int(1)},
@@ -146,7 +147,14 @@ func TestVM_Evaluate(t *testing.T) {
 
 			eval := vm.New(expr)
 
-			vPtr := reflect.New(reflect.TypeOf(tc.expect)).Interface()
+			var vPtr any
+			if tc.expect != nil {
+				vPtr = reflect.New(reflect.TypeOf(tc.expect)).Interface()
+			} else {
+				// Create a new any pointer.
+				vPtr = reflect.New(reflect.TypeOf((*any)(nil)).Elem()).Interface()
+			}
+
 			require.NoError(t, eval.Evaluate(scope, vPtr))
 
 			actual := reflect.ValueOf(vPtr).Elem().Interface()

@@ -7,6 +7,12 @@ internal API changes are not present.
 Main (unreleased)
 -----------------
 
+### Enhancements
+
+- Allow the `[]` operator to return `null` when accessing non-existant keys in
+  objects, rather than returning an error. For example, `{}["foo"]` now returns
+  `null`. (@rfratto)
+
 v0.2.0 (2023-10-20)
 -------------------
 
