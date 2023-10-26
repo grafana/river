@@ -13,6 +13,12 @@ Main (unreleased)
   objects, rather than returning an error. For example, `{}["foo"]` now returns
   `null`. (@rfratto)
 
+### Bugfixes
+
+- Fix a bug where indexing an object with a non-string key would generate a
+  type error informing users to supply a `number` instead of the actually
+  expected `string` type. (@rfratto)
+
 v0.2.0 (2023-10-20)
 -------------------
 
