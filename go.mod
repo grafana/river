@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/fatih/color v1.15.0
-	github.com/ohler55/ojg v1.20.1
+	github.com/ohler55/ojg v1.20.2
 	github.com/stretchr/testify v1.8.4
 )
 
