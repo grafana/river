@@ -315,6 +315,21 @@ func (vm *Evaluator) evaluateExpr(scope *Scope, assoc map[value.Value]ast.Node, 
 		}
 		return evalBinop(lhs, expr.Kind, rhs)
 
+	case *ast.TernaryExpr:
+		cond, err := vm.evaluateExpr(scope, assoc, expr.Condition)
+		if err != nil {
+			return value.Null, err
+		}
+		if cond.Type() != value.TypeBool {
+			return value.Null, value.TypeError{Value: cond, Expected: value.TypeBool}
+		}
+		// ternary features lazy evaluation
+		if cond.Bool() {
+			return vm.evaluateExpr(scope, assoc, expr.True)
+		} else {
+			return vm.evaluateExpr(scope, assoc, expr.False)
+		}
+
 	case *ast.ArrayExpr:
 		vals := make([]value.Value, len(expr.Elements))
 		for i, element := range expr.Elements {

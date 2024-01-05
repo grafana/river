@@ -148,6 +148,14 @@ type BinaryExpr struct {
 	Left, Right Expr
 }
 
+type TernaryExpr struct {
+	Condition   Expr
+	QuestionPos token.Pos
+	True        Expr
+	ColonPos    token.Pos
+	False       Expr
+}
+
 // ParenExpr represents an expression wrapped in parentheses.
 type ParenExpr struct {
 	Inner                Expr
@@ -185,6 +193,7 @@ var (
 	_ Expr = (*CallExpr)(nil)
 	_ Expr = (*UnaryExpr)(nil)
 	_ Expr = (*BinaryExpr)(nil)
+	_ Expr = (*TernaryExpr)(nil)
 	_ Expr = (*ParenExpr)(nil)
 )
 
@@ -204,6 +213,7 @@ func (n *IndexExpr) astNode()      {}
 func (n *CallExpr) astNode()       {}
 func (n *UnaryExpr) astNode()      {}
 func (n *BinaryExpr) astNode()     {}
+func (n *TernaryExpr) astNode()    {}
 func (n *ParenExpr) astNode()      {}
 
 func (n *AttributeStmt) astStmt() {}
@@ -218,6 +228,7 @@ func (n *IndexExpr) astExpr()      {}
 func (n *CallExpr) astExpr()       {}
 func (n *UnaryExpr) astExpr()      {}
 func (n *BinaryExpr) astExpr()     {}
+func (n *TernaryExpr) astExpr()    {}
 func (n *ParenExpr) astExpr()      {}
 
 // StartPos returns the position of the first character belonging to a Node.
@@ -264,6 +275,8 @@ func StartPos(n Node) token.Pos {
 		return n.KindPos
 	case *BinaryExpr:
 		return StartPos(n.Left)
+	case *TernaryExpr:
+		return StartPos(n.Condition)
 	case *ParenExpr:
 		return n.LParenPos
 	default:
@@ -315,6 +328,8 @@ func EndPos(n Node) token.Pos {
 		return EndPos(n.Value)
 	case *BinaryExpr:
 		return EndPos(n.Right)
+	case *TernaryExpr:
+		return EndPos(n.False)
 	case *ParenExpr:
 		return n.RParenPos
 	default:

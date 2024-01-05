@@ -63,6 +63,10 @@ func Walk(v Visitor, node Node) {
 	case *BinaryExpr:
 		Walk(v, n.Left)
 		Walk(v, n.Right)
+	case *TernaryExpr:
+		Walk(v, n.Condition)
+		Walk(v, n.True)
+		Walk(v, n.False)
 	case *ParenExpr:
 		Walk(v, n.Inner)
 	default:

@@ -379,9 +379,23 @@ func (n blockName) ValidAttribute() bool {
 
 // ParseExpression parses a single expression.
 //
-//	Expression = BinOpExpr
+//	Expression = BinOpExpr { "?" Expression ":" Expression }
 func (p *parser) ParseExpression() ast.Expr {
-	return p.parseBinOp(1)
+	exp := p.parseBinOp(1)
+	if p.tok == token.QUESTION {
+		qPos, _, _ := p.expect(token.QUESTION)
+		trueCase := p.ParseExpression()
+		cPos, _, _ := p.expect(token.COLON)
+		falseCase := p.ParseExpression()
+		return &ast.TernaryExpr{
+			Condition:   exp,
+			True:        trueCase,
+			False:       falseCase,
+			QuestionPos: qPos,
+			ColonPos:    cPos,
+		}
+	}
+	return exp
 }
 
 // parseBinOp is the entrypoint for binary expressions. If there is no binary

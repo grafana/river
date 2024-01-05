@@ -21,36 +21,38 @@ import (
 //   line_comment  = "//" { character }
 //   block_comment = "/*" { character | newline } "*/"
 //
-//   IDENT   = letter { letter | number }
-//   NULL    = "null"
-//   BOOL    = "true" | "false"
-//   NUMBER  = digits
-//   FLOAT   = ( digits | "." digits ) [ "e" [ "+" | "-" ] digits ]
-//   STRING  = '"' { string_character | escape_sequence } '"'
-//   OR      = "||"
-//   AND     = "&&"
-//   NOT     = "!"
-//   NEQ     = "!="
-//   ASSIGN  = "="
-//   EQ      = "=="
-//   LT      = "<"
-//   LTE     = "<="
-//   GT      = ">"
-//   GTE     = ">="
-//   ADD     = "+"
-//   SUB     = "-"
-//   MUL     = "*"
-//   DIV     = "/"
-//   MOD     = "%"
-//   POW     = "^"
-//   LCURLY  = "{"
-//   RCURLY  = "}"
-//   LPAREN  = "("
-//   RPAREN  = ")"
-//   LBRACK  = "["
-//   RBRACK  = "]"
-//   COMMA   = ","
-//   DOT     = "."
+//   IDENT    = letter { letter | number }
+//   NULL     = "null"
+//   BOOL     = "true" | "false"
+//   NUMBER   = digits
+//   FLOAT    = ( digits | "." digits ) [ "e" [ "+" | "-" ] digits ]
+//   STRING   = '"' { string_character | escape_sequence } '"'
+//   OR       = "||"
+//   AND      = "&&"
+//   NOT      = "!"
+//   NEQ      = "!="
+//   ASSIGN   = "="
+//   EQ       = "=="
+//   LT       = "<"
+//   LTE      = "<="
+//   GT       = ">"
+//   GTE      = ">="
+//   ADD      = "+"
+//   SUB      = "-"
+//   MUL      = "*"
+//   DIV      = "/"
+//   MOD      = "%"
+//   POW      = "^"
+//   LCURLY   = "{"
+//   RCURLY   = "}"
+//   LPAREN   = "("
+//   RPAREN   = ")"
+//   LBRACK   = "["
+//   RBRACK   = "]"
+//   COMMA    = ","
+//   DOT      = "."
+//   COLON    = ":"
+//   QUESTION = "?"
 //
 // The EBNF for escape_sequence is currently undocumented; see scanEscape for
 // details. The escape sequences supported by River are the same as the escape
@@ -338,6 +340,10 @@ scanAgain:
 		case '.':
 			// NOTE: Fractions starting with '.' are handled by outer switch
 			tok = token.DOT
+		case ':':
+			tok = token.COLON
+		case '?':
+			tok = token.QUESTION
 
 		default:
 			// s.next() reports invalid BOMs so we don't need to repeat the error.

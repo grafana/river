@@ -73,6 +73,8 @@ var tokens = []tokenExample{
 	{token.RPAREN, ")"},
 	{token.RBRACK, "]"},
 	{token.RCURLY, "}"},
+	{token.QUESTION, "?"},
+	{token.COLON, ":"},
 
 	// Keywords
 	{token.NULL, "null"},

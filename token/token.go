@@ -49,14 +49,16 @@ const (
 	MOD // %
 	POW // ^
 
-	LCURLY // {
-	RCURLY // }
-	LPAREN // (
-	RPAREN // )
-	LBRACK // [
-	RBRACK // ]
-	COMMA  // ,
-	DOT    // .
+	LCURLY   // {
+	RCURLY   // }
+	LPAREN   // (
+	RPAREN   // )
+	LBRACK   // [
+	RBRACK   // ]
+	COMMA    // ,
+	DOT      // .
+	COLON    // :
+	QUESTION // ?
 	operatorEnd
 
 	TERMINATOR // \n
@@ -94,14 +96,16 @@ var tokenNames = [...]string{
 	MOD: "%",
 	POW: "^",
 
-	LCURLY: "{",
-	RCURLY: "}",
-	LPAREN: "(",
-	RPAREN: ")",
-	LBRACK: "[",
-	RBRACK: "]",
-	COMMA:  ",",
-	DOT:    ".",
+	LCURLY:   "{",
+	RCURLY:   "}",
+	LPAREN:   "(",
+	RPAREN:   ")",
+	LBRACK:   "[",
+	RBRACK:   "]",
+	COMMA:    ",",
+	DOT:      ".",
+	COLON:    ":",
+	QUESTION: "?",
 
 	TERMINATOR: "TERMINATOR",
 }

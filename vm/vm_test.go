@@ -136,6 +136,15 @@ func TestVM_Evaluate(t *testing.T) {
 		{`!true`, bool(false)},
 		{`!false`, bool(true)},
 		{`-15`, int(-15)},
+
+		// Ternary
+		{`true ? 1 : 2`, int(1)},
+		{`false ? 1 : 2`, int(2)},
+		{`3 >= 4 ? "a" : "b"`, string("b")},
+		{`true ? 2 > 1 ? 3 : 4 : 2 > 1 ? 5 : 6`, int(3)},
+		{`false ? 2 > 1 ? 3 : 4 : 2 > 1 ? 5 : 6`, int(5)},
+		{`true ? 2 < 1 ? 3 : 4 : 2 > 1 ? 5 : 6`, int(4)},
+		{`false ? 2 < 1 ? 3 : 4 : 2 < 1 ? 5 : 6`, int(6)},
 	}
 
 	for _, tc := range tt {

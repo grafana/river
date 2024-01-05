@@ -175,6 +175,13 @@ func (w *walker) walkExpr(e ast.Expr) {
 		w.p.Write(wsBlank, e.KindPos, e.Kind, wsBlank)
 		w.walkExpr(e.Right)
 
+	case *ast.TernaryExpr:
+		w.walkExpr(e.Condition)
+		w.p.Write(wsBlank, token.QUESTION, wsBlank)
+		w.walkExpr(e.True)
+		w.p.Write(wsBlank, token.COLON, wsBlank)
+		w.walkExpr(e.False)
+
 	case *ast.ParenExpr:
 		w.p.Write(token.LPAREN)
 		w.walkExpr(e.Inner)
