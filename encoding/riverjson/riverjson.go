@@ -26,16 +26,16 @@ func MarshalBody(val interface{}) ([]byte, error) {
 func encodeStructAsBody(rv reflect.Value) jsonBody {
 	for rv.Kind() == reflect.Pointer {
 		if rv.IsNil() {
-			return []jsonStatement{}
+			return jsonBody{}
 		}
 		rv = rv.Elem()
 	}
 
 	if rv.Kind() == reflect.Invalid {
-		return []jsonStatement{}
+		return jsonBody{}
 	}
 
-	body := []jsonStatement{}
+	body := jsonBody{}
 
 	switch rv.Kind() {
 	case reflect.Struct:
