@@ -7,6 +7,10 @@ internal API changes are not present.
 Main (unreleased)
 -----------------
 
+### Features
+
+- Add support for raw map[string]any type to riverjson encoding. (@wildum)
+
 v0.3.0 (2023-10-26)
 -------------------
 

@@ -333,3 +333,22 @@ func TestMapBlocks(t *testing.T) {
 	require.NoError(t, err)
 	require.JSONEq(t, expect, string(bb))
 }
+
+func TestRawMap(t *testing.T) {
+	val := map[string]any{"field": "value", "anotherField": 3}
+
+	expect := `[{
+		"name": "field",
+		"type": "attr",
+		"value": { "type": "string", "value": "value" }
+	},
+	{
+		"name": "anotherField",
+		"type": "attr",
+		"value": { "type": "number", "value": 3 }
+	}]`
+
+	bb, err := riverjson.MarshalBody(val)
+	require.NoError(t, err)
+	require.JSONEq(t, expect, string(bb))
+}
