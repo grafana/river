@@ -17,7 +17,7 @@ import (
 var goRiverDefaulter = reflect.TypeOf((*value.Defaulter)(nil)).Elem()
 
 // MarshalBody marshals the provided Go value to a JSON representation of
-// River. MarshalBody panics if not given a struct with River tags.
+// River. MarshalBody panics if not given a struct with River tags or a map[string]any.
 func MarshalBody(val interface{}) ([]byte, error) {
 	rv := reflect.ValueOf(val)
 	return json.Marshal(encodeStructAsBody(rv))
@@ -26,37 +26,57 @@ func MarshalBody(val interface{}) ([]byte, error) {
 func encodeStructAsBody(rv reflect.Value) jsonBody {
 	for rv.Kind() == reflect.Pointer {
 		if rv.IsNil() {
-			return []jsonStatement{}
+			return jsonBody{}
 		}
 		rv = rv.Elem()
 	}
 
 	if rv.Kind() == reflect.Invalid {
-		return []jsonStatement{}
-	} else if rv.Kind() != reflect.Struct {
-		panic(fmt.Sprintf("river/encoding/riverjson: can only encode struct values to bodies, got %s", rv.Kind()))
+		return jsonBody{}
 	}
 
-	fields := rivertags.Get(rv.Type())
-	defaults := reflect.New(rv.Type()).Elem()
-	if defaults.CanAddr() && defaults.Addr().Type().Implements(goRiverDefaulter) {
-		defaults.Addr().Interface().(value.Defaulter).SetToDefault()
-	}
+	body := jsonBody{}
 
-	body := []jsonStatement{}
-
-	for _, field := range fields {
-		fieldVal := reflectutil.Get(rv, field)
-		fieldValDefault := reflectutil.Get(defaults, field)
-
-		var isEqual = fieldVal.Comparable() && fieldVal.Equal(fieldValDefault)
-		var isZero = fieldValDefault.IsZero() && fieldVal.IsZero()
-
-		if field.IsOptional() && (isEqual || isZero) {
-			continue
+	switch rv.Kind() {
+	case reflect.Struct:
+		fields := rivertags.Get(rv.Type())
+		defaults := reflect.New(rv.Type()).Elem()
+		if defaults.CanAddr() && defaults.Addr().Type().Implements(goRiverDefaulter) {
+			defaults.Addr().Interface().(value.Defaulter).SetToDefault()
 		}
 
-		body = append(body, encodeFieldAsStatements(nil, field, fieldVal)...)
+		for _, field := range fields {
+			fieldVal := reflectutil.Get(rv, field)
+			fieldValDefault := reflectutil.Get(defaults, field)
+
+			isEqual := fieldVal.Comparable() && fieldVal.Equal(fieldValDefault)
+			isZero := fieldValDefault.IsZero() && fieldVal.IsZero()
+
+			if field.IsOptional() && (isEqual || isZero) {
+				continue
+			}
+
+			body = append(body, encodeFieldAsStatements(nil, field, fieldVal)...)
+		}
+
+	case reflect.Map:
+		if rv.Type().Key().Kind() != reflect.String {
+			panic("river/encoding/riverjson: unsupported map type; expected map[string]T, got " + rv.Type().String())
+		}
+
+		iter := rv.MapRange()
+		for iter.Next() {
+			mapKey, mapValue := iter.Key(), iter.Value()
+
+			body = append(body, jsonAttr{
+				Name:  mapKey.String(),
+				Type:  "attr",
+				Value: buildJSONValue(value.FromRaw(mapValue)),
+			})
+		}
+
+	default:
+		panic(fmt.Sprintf("river/encoding/riverjson: can only encode struct or map[string]T values to bodies, got %s", rv.Kind()))
 	}
 
 	return body
