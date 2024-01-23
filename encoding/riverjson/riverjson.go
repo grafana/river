@@ -76,7 +76,7 @@ func encodeStructAsBody(rv reflect.Value) jsonBody {
 		}
 
 	default:
-		panic(fmt.Sprintf("river/encoding/riverjson: can only encode struct or map values to bodies, got %s", rv.Kind()))
+		panic(fmt.Sprintf("river/encoding/riverjson: can only encode struct or map[string]T values to bodies, got %s", rv.Kind()))
 	}
 
 	return body
