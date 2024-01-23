@@ -335,18 +335,27 @@ func TestMapBlocks(t *testing.T) {
 }
 
 func TestRawMap(t *testing.T) {
-	val := map[string]any{"field": "value", "anotherField": 3}
+	val := map[string]any{"field": "value"}
 
 	expect := `[{
-		"name": "field",
-		"type": "attr",
-		"value": { "type": "string", "value": "value" }
-	},
-	{
-		"name": "anotherField",
-		"type": "attr",
-		"value": { "type": "number", "value": 3 }
-	}]`
+        "name": "field",
+        "type": "attr",
+        "value": { "type": "string", "value": "value" }
+    }]`
+
+	bb, err := riverjson.MarshalBody(val)
+	require.NoError(t, err)
+	require.JSONEq(t, expect, string(bb))
+}
+
+func TestRawMap_Capsule(t *testing.T) {
+	val := map[string]any{"capsule": rivertypes.Secret("foo")}
+
+	expect := `[{
+        "name": "capsule",
+        "type": "attr",
+        "value": { "type": "capsule", "value": "(secret)" }
+    }]`
 
 	bb, err := riverjson.MarshalBody(val)
 	require.NoError(t, err)
