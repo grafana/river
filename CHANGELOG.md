@@ -10,6 +10,7 @@ Main (unreleased)
 ### Features
 
 - Add support for raw map[string]any type to riverjson encoding. (@wildum)
+- Add yaml_decode function to stdlib. (@djcode)
 
 v0.3.0 (2023-10-26)
 -------------------
