@@ -11,6 +11,8 @@ import (
 	"github.com/grafana/river/rivertypes"
 	"github.com/ohler55/ojg/jp"
 	"github.com/ohler55/ojg/oj"
+
+	"gopkg.in/yaml.v3"
 )
 
 // Identifiers holds a list of stdlib identifiers by name. All interface{}
@@ -77,6 +79,15 @@ var Identifiers = map[string]interface{}{
 	"json_decode": func(in string) (interface{}, error) {
 		var res interface{}
 		err := json.Unmarshal([]byte(in), &res)
+		if err != nil {
+			return nil, err
+		}
+		return res, nil
+	},
+
+	"yaml_decode": func(in string) (interface{}, error) {
+		var res interface{}
+		err := yaml.Unmarshal([]byte(in), &res)
 		if err != nil {
 			return nil, err
 		}
