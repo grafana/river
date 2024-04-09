@@ -117,7 +117,7 @@ func (f *File) AddLine(offset int) {
 
 // PositionFor returns a Position from an offset.
 func (f *File) PositionFor(p Pos) Position {
-	if p == NoPos {
+	if f == nil || p == NoPos {
 		return Position{}
 	}
 

@@ -2,6 +2,7 @@ package printer_test
 
 import (
 	"bytes"
+	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -9,8 +10,10 @@ import (
 	"testing"
 	"unicode"
 
+	"github.com/grafana/river/ast"
 	"github.com/grafana/river/parser"
 	"github.com/grafana/river/printer"
+	"github.com/grafana/river/token"
 	"github.com/stretchr/testify/require"
 )
 
@@ -56,6 +59,21 @@ func testPrinter(t *testing.T, inputFile string, expectFile string, expectErrorF
 
 	trimmed := strings.TrimRightFunc(string(expectBB), unicode.IsSpace)
 	require.Equal(t, trimmed, buf.String(), "%s", buf.String())
+}
+
+func TestConstructedAst(t *testing.T) {
+	// make sure ast nodes without position info don't crash printer
+	b := ast.Body{
+		&ast.AttributeStmt{
+			Name: &ast.Ident{Name: "something"},
+			Value: &ast.LiteralExpr{
+				Kind:  token.STRING,
+				Value: fmt.Sprintf("%q", "abc"),
+			},
+		},
+	}
+	var buf bytes.Buffer
+	require.NoError(t, printer.Fprint(&buf, b))
 }
 
 // getExpectedErrorMessage will retrieve an optional expected error message for the test.
