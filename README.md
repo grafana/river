@@ -1,3 +1,16 @@
+> **Deprecation notice**: River has been moved to the [Grafana Alloy
+> repository][syntax] under the "syntax" submodule, and is now called the
+> "Grafana Alloy configuration syntax."
+>
+> For more information, read our blog posts about Alloy and how to easily
+> migrate from Agent to Alloy:
+>
+> * [Alloy announcement blog post](https://grafana.com/blog/2024/04/09/grafana-alloy-opentelemetry-collector-with-prometheus-pipelines/)
+> * [Alloy FAQ](https://grafana.com/blog/2024/04/09/grafana-agent-to-grafana-alloy-opentelemetry-collector-faq/)
+> * [Migrate to Alloy](https://grafana.com/docs/alloy/latest/tasks/migrate/)
+>
+> [syntax]: https://github.com/grafana/alloy/tree/main/syntax
+
 # River
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/grafana/river.svg)](https://pkg.go.dev/github.com/grafana/river)
